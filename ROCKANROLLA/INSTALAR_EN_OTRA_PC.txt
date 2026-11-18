@@ -1,0 +1,73 @@
+==========================================================
+ ROCKANROLLA v2.0 - GUIA DE INSTALACION EN OTRA PC
+==========================================================
+
+CONTENIDO DEL PAQUETE
+---------------------
+MUSICA\            6 carpetas con 812 canciones + PLAYLIST.lst cada una
+                     70s (146) / 80s (183) / 90s (145) / MIX (169)
+                     ROCK (44) / ROCK_ESPANOL (125)
+WEB\               Pantalla para OBS y TikTok (index.html)
+CURRENT\           Aqui ZaraRadio escribe CurrentSong.txt (cancion al aire)
+ZARA\              config_rockanrolla_v2.reg (configuracion automatica)
+iniciar_emisora.ps1  Arranca ZaraRadio + servidor web en un clic
+
+IMPORTANTE: LA RUTA EXACTA
+--------------------------
+El paquete debe quedar en:   D:\ROCKANROLLA
+Las playlists guardan rutas absolutas a esa carpeta. Si la copias en
+otra ruta, ZaraRadio no encontrara las canciones y saltara los temas.
+En el explorador: copia la carpeta D:\ROCKANROLLA completa a la otra PC
+(en su disco D:) manteniendo el mismo nombre.
+
+INSTALACION (4 PASOS)
+---------------------
+1. INSTALAR ZARARADIO
+   - Descargar e instalar ZaraRadio 1.6.2 en la ruta por defecto:
+     C:\Program Files (x86)\ZaraSoft\ZaraRadio
+
+2. COPIAR ESTE PAQUETE
+   - Copiar la carpeta completa a D:\ROCKANROLLA en la nueva PC
+
+3. APLICAR CONFIGURACION
+   - Cerrar ZaraRadio si esta abierto
+   - Doble clic en ZARA\config_rockanrolla_v2.reg -> Aceptar
+   (registra las 6 playlists, abre la 80s al iniciar y configura
+    CURRENT como carpeta de CurrentSong.txt)
+
+4. ARRANCAR
+   - Clic derecho sobre iniciar_emisora.ps1 -> Ejecutar con PowerShell
+     (necesita Python instalado; lo busca solo en las rutas comunes)
+   - Esto abre ZaraRadio y levanta el servidor web en el puerto 8080
+
+PANTALLA EN OBS
+---------------
+- Fuente de Navegador (Browser Source)
+- URL:  http://localhost:8080/web/index.html
+- Tamano: 1920x1080 (modo TikTok 9:16 automatico si la pantalla es vertical)
+
+COMO USAR LAS PLAYLISTS (sin scripts)
+-------------------------------------
+- Al abrir ZaraRadio se carga sola la playlist 80s.
+- Para cambiar de carpeta: Archivo > Abrir playlist > MUSICA\<carpeta>\PLAYLIST.lst
+  (o usa el selector de carpeta en la pantalla web, arriba a la derecha del buscador)
+- Para agregar canciones nuevas: descarga el mp3 a la carpeta que corresponda,
+  abre la PLAYLIST.lst de esa carpeta en Zara y arrastra/agrega el tema, luego
+  guarda la lista (Zara la reescribe en el formato correcto).
+
+REGLA DE ORO CON LOS NOMBRES DE ARCHIVO
+---------------------------------------
+- Los acentos y la enie NO son problema (Musica, Corazon, Espanol = OK).
+- EVITA en los nombres: emojis, simbolos raros de YouTube como:
+    ： ｜ ⧸ ＂ ？ ＊  (dos puntos/pleca/barra/question/asterisco "anchos")
+  Si un tema trae esos signos, renombralo a mano ANTES de agregarlo
+  (cambiales por: : -> -, | -> -, / -> -, ? -> nada, * -> nada).
+  Con eso Zara siempre encuentra el archivo y no salta canciones.
+
+VERIFICACION RAPIDA
+-------------------
+- Zara reproduce seguido (sin saltos) = playlists y nombres OK
+- La web muestra la cancion: revisa CURRENT\CurrentSong.txt (se actualiza solo)
+- Si la web no carga: verificar que el puerto 8080 este sirviendo
+  (abrir http://localhost:8080/web/index.html en Chrome)
+==========================================================

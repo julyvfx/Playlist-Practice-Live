@@ -1,0 +1,32 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================
+;  CONFIGURACION ZARARADIO - ROCKANROLLA v2.0
+;  Requiere el paquete copiado exactamente en: D:\ROCKANROLLA
+;  Cerrar ZaraRadio antes de aplicar (doble clic -> Si/Aceptar)
+; ============================================================
+
+[HKEY_CURRENT_USER\Software\ZaraSoft\ZaraRadio]
+"ShowTips"=dword:00000000
+"NextTip"=dword:0000000c
+"file1"="D:\\ROCKANROLLA\\MUSICA\\80s\\PLAYLIST.lst"
+"file2"="D:\\ROCKANROLLA\\MUSICA\\90s\\PLAYLIST.lst"
+"file3"="D:\\ROCKANROLLA\\MUSICA\\70s\\PLAYLIST.lst"
+"file4"="D:\\ROCKANROLLA\\MUSICA\\MIX\\PLAYLIST.lst"
+"file5"="D:\\ROCKANROLLA\\MUSICA\\ROCK\\PLAYLIST.lst"
+"file6"="D:\\ROCKANROLLA\\MUSICA\\ROCK_ESPANOL\\PLAYLIST.lst"
+"file7"=""
+"file8"=""
+"file9"=""
+
+[HKEY_CURRENT_USER\Software\ZaraSoft\ZaraRadio\general]
+"Lang"=dword:000000bb
+"openlastlist"=dword:00000001
+"AutoPlay"=dword:00000000
+"ShutdownConf"=dword:00000000
+"doubleClick"=dword:00000000
+"currentSong"="D:\\ROCKANROLLA\\CURRENT"
+
+[HKEY_CURRENT_USER\Software\ZaraSoft\ZaraRadio\tags]
+"enabled"=dword:00000000
+"format"="%TITL - %ARTI"

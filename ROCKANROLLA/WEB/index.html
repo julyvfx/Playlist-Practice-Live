@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROCKANROLA LIVE — V2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Oswald:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ROCKANROLA LIVE V2.0 — HOJA DE ESTILOS
+   Identidad: negro / rojo / amarillo / azul eléctrico / púrpura
+   ============================================================ */
+:root{
+  --negro:#050507;
+  --negro2:#0b0b12;
+  --rojo:#ff2233;
+  --rojo2:#c0101f;
+  --amarillo:#ffc400;
+  --azul:#1f6bff;
+  --purpura:#9b30ff;
+  --cian:#29e6ff;
+  --texto:#f2f2f6;
+  --gris:#9aa0ae;
+  --borde:rgba(255,255,255,.08);
+  --font-display:'Orbitron',sans-serif;
+  --font-cuerpo:'Rajdhani',sans-serif;
+  --font-labels:'Oswald',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--negro);color:var(--texto);
+  font-family:var(--font-cuerpo);user-select:none}
+
+/* ---------------- CAPA DE FONDO: IMAGEN + VISUAL + OVERLAY ---------------- */
+#bgLayer{position:fixed;inset:0;z-index:0;overflow:hidden}
+.slide{position:absolute;inset:-3%;background-size:cover;background-position:center;opacity:0;
+  transform:scale(1);filter:brightness(.72) saturate(1.08);transition:opacity 1.1s ease}
+.slide.on{opacity:1;animation:kenburns 24s ease-in-out infinite alternate}
+@keyframes kenburns{
+  0%{transform:scale(1.02) translateX(-1.2%)}
+  100%{transform:scale(1.16) translateX(1.4%)}
+}
+#bgGrad{position:absolute;inset:0;background:
+  radial-gradient(120% 90% at 15% 10%,rgba(120,20,60,.35),transparent 55%),
+  radial-gradient(120% 90% at 90% 90%,rgba(20,40,140,.30),transparent 55%),
+  linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.82))}
+#visualCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5;
+  mix-blend-mode:screen;transition:opacity .9s ease}
+#vignette{position:absolute;inset:0;box-shadow:inset 0 0 26vmin rgba(0,0,0,.85);
+  pointer-events:none}
+#scanlines{position:absolute;inset:0;pointer-events:none;opacity:.12;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.55) 2px 4px)}
+
+/* Destello al cambiar de canción */
+#flash{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.55),rgba(255,196,0,.25) 30%,transparent 70%)}
+body.song-flash #flash{animation:flashanim .9s ease-out}
+@keyframes flashanim{0%{opacity:.9}100%{opacity:0}}
+
+/* ---------------- NEWS BAR SUPERIOR ---------------- */
+#newsBar{position:fixed;top:0;left:0;right:0;z-index:40;height:52px;display:flex;align-items:center;
+  background:linear-gradient(90deg,#16060a 0%,#2a070d 45%,#0a0a14 100%);
+  border-bottom:1px solid rgba(255,34,51,.45);box-shadow:0 6px 24px rgba(200,0,30,.25)}
+.newsTag{flex:none;display:flex;align-items:center;gap:8px;height:100%;padding:0 18px;
+  background:linear-gradient(180deg,#ff2233,#a80f1e);font-family:var(--font-labels);
+  font-weight:600;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;
+  clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.newsTag .dot{width:9px;height:9px;border-radius:50%;background:#fff;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
+.newsWrap{flex:1;overflow:hidden;position:relative;height:100%}
+.newsTrack{display:inline-flex;white-space:nowrap;align-items:center;height:100%;
+  font-family:var(--font-labels);font-size:15px;letter-spacing:1px;color:#f5d7da;
+  animation:marquee linear infinite;will-change:transform}
+.newsTrack .sep{margin:0 26px;color:var(--amarillo)}
+.newsTrack b{color:var(--amarillo);font-weight:600}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------------- HEADER ---------------- */
+#header{position:fixed;top:52px;left:0;right:0;z-index:30;height:118px;display:flex;align-items:center;
+  padding:0 26px;background:linear-gradient(180deg,rgba(0,0,0,.72),transparent);
+  pointer-events:none}
+.logoBox{display:flex;align-items:center;gap:16px}
+.logoMark{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;flex:none;
+  background:linear-gradient(135deg,#ff2233,#7a0d1a);
+  box-shadow:0 0 26px rgba(255,34,51,.55),inset 0 0 12px rgba(255,255,255,.25);
+  font-family:var(--font-display);font-weight:900;font-size:30px;color:#fff;animation:logoglow 2.6s ease-in-out infinite}
+@keyframes logoglow{0%,100%{box-shadow:0 0 18px rgba(255,34,51,.4)}50%{box-shadow:0 0 40px rgba(255,34,51,.85)}}
+.logoTxt strong{display:block;font-family:var(--font-display);font-size:30px;letter-spacing:3px;
+  background:linear-gradient(90deg,#fff,#ffc400 55%,#ff2233);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;text-shadow:0 0 30px rgba(255,196,0,.25)}
+.logoTxt small{display:block;font-family:var(--font-labels);font-size:12px;letter-spacing:6px;color:var(--gris);
+  text-transform:uppercase}
+.headerRight{margin-left:auto;display:flex;align-items:center;gap:22px}
+.onair{display:flex;align-items:center;gap:10px;padding:8px 16px;border:1px solid rgba(255,34,51,.5);
+  border-radius:10px;background:rgba(0,0,0,.45);font-family:var(--font-display);font-size:13px;font-weight:700;
+  letter-spacing:2px;color:#fff}
+.onair .pillo{width:12px;height:12px;border-radius:50%;background:var(--rojo);animation:onair 1.1s ease-in-out infinite}
+@keyframes onair{0%,100%{box-shadow:0 0 4px var(--rojo);transform:scale(1)}50%{box-shadow:0 0 18px var(--rojo);transform:scale(1.25)}}
+.onair small{color:var(--gris);font-size:10px;letter-spacing:1px}
+.hclock{font-family:var(--font-display);font-size:16px;letter-spacing:2px;color:var(--amarillo);
+  background:rgba(0,0,0,.45);border:1px solid rgba(255,196,0,.35);padding:8px 14px;border-radius:10px;text-align:center}
+.hclock small{display:block;font-family:var(--font-labels);font-size:9px;letter-spacing:3px;color:var(--gris)}
+.hcounter{font-family:var(--font-display);font-size:15px;color:var(--cian);background:rgba(0,0,0,.45);
+  border:1px solid rgba(41,230,255,.3);padding:8px 14px;border-radius:10px;text-align:center}
+.hcounter small{display:block;font-family:var(--font-labels);font-size:9px;letter-spacing:2px;color:var(--gris)}
+.vubox{display:flex;gap:6px;align-items:flex-end;height:40px;background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:6px 10px}
+.vu{width:7px;border-radius:2px;background:linear-gradient(180deg,#29e6ff,#1f6bff 40%,#ff2233);
+  transition:height .12s ease}
+.vu.gold{background:linear-gradient(180deg,#ffc400,#ff2233)}
+
+/* ---------------- LAYOUT PRINCIPAL ---------------- */
+#main{position:fixed;inset:0;z-index:20;display:grid;grid-template-columns:minmax(430px,34%) 1fr;gap:20px;
+  padding:186px 26px 90px;pointer-events:none}
+#main>*{pointer-events:auto}
+.card{background:linear-gradient(160deg,rgba(16,14,24,.88),rgba(6,6,10,.92));
+  border:1px solid var(--borde);border-radius:18px;backdrop-filter:blur(6px);
+  box-shadow:0 20px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,34,51,.06);overflow:hidden}
+.card h3{display:flex;align-items:center;gap:10px;font-family:var(--font-labels);font-size:13px;
+  letter-spacing:3px;color:var(--amarillo);text-transform:uppercase;padding:13px 18px;
+  border-bottom:1px solid var(--borde);background:linear-gradient(90deg,rgba(255,34,51,.12),transparent 70%)}
+.card h3 .bar3{width:4px;height:18px;border-radius:2px;background:linear-gradient(180deg,var(--rojo),var(--amarillo))}
+
+/* ---------- COLUMNA IZQUIERDA: AHORA SUENA ---------- */
+#colLeft{display:flex;flex-direction:column;gap:16px;min-height:0}
+#nowCard{flex:1;min-height:0;display:flex;flex-direction:column;padding:18px}
+.npTop{display:flex;align-items:center;gap:18px}
+.vinylWrap{position:relative;flex:none}
+.vinyl{width:132px;height:132px;border-radius:50%;position:relative;
+  background:repeating-radial-gradient(circle at center,#14141c 0 2px,#0a0a10 2px 4px);
+  border:2px solid #26262f;animation:spin 2.6s linear infinite;
+  box-shadow:0 0 30px rgba(30,60,200,.25),inset 0 0 40px rgba(0,0,0,.7),0 10px 30px rgba(0,0,0,.6)}
+.vinyl::after{content:"";position:absolute;inset:36px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,#ffc400 0 12px,#ff2233 12px 26px,#7a0d1a 26px);
+  border:2px solid rgba(255,255,255,.25)}
+.vinyl .spindle{position:absolute;inset:58px;z-index:2;border-radius:50%;
+  background:radial-gradient(circle,#fff,#8b8b94 60%,#555);box-shadow:0 0 8px rgba(255,255,255,.6)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.equalizer{display:flex;align-items:flex-end;gap:4px;height:52px;flex:1;min-width:0}
+.eqbar{flex:1;border-radius:3px;transform-origin:bottom;
+  background:linear-gradient(180deg,var(--amarillo),var(--rojo) 70%,var(--purpura));
+  box-shadow:0 0 10px rgba(255,34,51,.35);
+  animation:eqmove 1.15s ease-in-out infinite}
+@keyframes eqmove{0%,100%{transform:scaleY(.18)}50%{transform:scaleY(1)}}
+.equalizer span:nth-child(1){animation-delay:-.0s}.equalizer span:nth-child(2){animation-delay:-.35s}
+.equalizer span:nth-child(3){animation-delay:-.7s}.equalizer span:nth-child(4){animation-delay:-.2s}
+.equalizer span:nth-child(5){animation-delay:-.5s}.equalizer span:nth-child(6){animation-delay:-.9s}
+.equalizer span:nth-child(7){animation-delay:-.15s}.equalizer span:nth-child(8){animation-delay:-.6s}
+.equalizer span:nth-child(9){animation-delay:-.3s}.equalizer span:nth-child(10){animation-delay:-.8s}
+.equalizer span:nth-child(11){animation-delay:-.45s}.equalizer span:nth-child(12){animation-delay:-.1s}
+.equalizer span:nth-child(13){animation-delay:-.55s}.equalizer span:nth-child(14){animation-delay:-.25s}
+.equalizer span:nth-child(15){animation-delay:-.75s}.equalizer span:nth-child(16){animation-delay:-.4s}
+
+.npLabel{font-family:var(--font-labels);font-size:12px;letter-spacing:4px;color:var(--gris);
+  text-transform:uppercase;margin-top:20px}
+.npLabel b{color:var(--rojo);animation:blink 1.4s steps(2) infinite}
+#npArtist{font-family:var(--font-display);font-size:30px;margin-top:4px;letter-spacing:1px;
+  background:linear-gradient(90deg,#fff,#ffc400);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent}
+#npTitle{font-family:var(--font-display);font-size:21px;color:var(--cian);margin-top:4px;
+  text-shadow:0 0 18px rgba(41,230,255,.35)}
+#npInfo{font-family:var(--font-labels);font-size:12px;letter-spacing:2px;color:var(--gris);margin-top:12px;
+  display:flex;gap:14px;flex-wrap:wrap}
+#npInfo span{background:rgba(255,255,255,.05);padding:4px 10px;border-radius:6px;border:1px solid var(--borde)}
+#npInfo span b{color:var(--amarillo)}
+.progressTrack{height:5px;border-radius:3px;background:rgba(255,255,255,.08);margin-top:18px;overflow:hidden}
+#progressFill{height:100%;width:0%;border-radius:3px;
+  background:linear-gradient(90deg,var(--azul),var(--purpura),var(--rojo));
+  box-shadow:0 0 12px rgba(255,34,51,.6);animation:prog 60s linear infinite}
+@keyframes prog{0%{width:4%}100%{width:96%}}
+
+/* ---------- COLUMNA DERECHA ---------- */
+#colRight{display:flex;flex-direction:column;gap:16px;min-height:0}
+#upNextCard{flex:none;max-height:210px;display:flex;flex-direction:column}
+#upNextList{flex:1;overflow:hidden;padding:8px 12px}
+.upNextItem{display:flex;align-items:center;gap:12px;padding:7px 12px;border-radius:10px;
+  font-size:15px;color:#dfe2ea;border-left:3px solid transparent}
+.upNextItem .n{font-family:var(--font-display);font-size:11px;color:var(--gris);width:28px;flex:none}
+.upNextItem.on{border-left-color:var(--amarillo);background:linear-gradient(90deg,rgba(255,196,0,.12),transparent)}
+.upNextItem.on .n{color:var(--amarillo)}
+
+#suggestCard{flex:none;max-height:150px}
+#suggestList{display:flex;gap:12px;padding:12px;overflow:hidden}
+.sugg{flex:none;width:150px;height:88px;border-radius:12px;border:1px solid var(--borde);
+  background:linear-gradient(145deg,#16121f,#0a0a12);
+  display:flex;flex-direction:column;justify-content:center;padding:0 14px;
+  border-top:2px solid var(--purpura);animation:suggfloat 4s ease-in-out infinite}
+.sugg small{font-family:var(--font-labels);font-size:10px;letter-spacing:2px;color:var(--gris)}
+.sugg b{font-size:13px;color:#fff;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sugg:nth-child(2){animation-delay:.6s;border-top-color:var(--azul)}
+.sugg:nth-child(3){animation-delay:1.2s;border-top-color:var(--amarillo)}
+.sugg:nth-child(4){animation-delay:1.8s;border-top-color:var(--cian)}
+@keyframes suggfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+#playlistCard{flex:1;min-height:0;display:flex;flex-direction:column}
+#searchBox{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--borde)}
+#searchBox .mag{color:var(--gris);font-size:16px}
+#searchInput{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--borde);border-radius:8px;
+  color:var(--texto);font-family:var(--font-cuerpo);font-size:15px;padding:7px 12px;outline:none}
+#searchInput:focus{border-color:rgba(255,196,0,.5);box-shadow:0 0 12px rgba(255,196,0,.15)}
+#selCarpeta{flex:none;width:150px;background:rgba(255,255,255,.05);border:1px solid var(--borde);
+  border-radius:8px;color:var(--amarillo);font-family:var(--font-labels);font-size:13px;
+  letter-spacing:1px;padding:7px 6px;outline:none;cursor:pointer}
+#selCarpeta option{background:#0b0b12;color:var(--texto)}
+#playlistList{flex:1;overflow-y:auto;padding:10px 12px 18px;scroll-behavior:smooth}
+#playlistList::-webkit-scrollbar{width:7px}
+#playlistList::-webkit-scrollbar-thumb{background:linear-gradient(#ff2233,#9b30ff);border-radius:4px}
+.pitem{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;cursor:pointer;
+  font-size:15px;color:#d5d8e0;transition:background .25s;border:1px solid transparent}
+.pitem:hover{background:rgba(255,255,255,.05)}
+.pitem .idx{font-family:var(--font-display);font-size:11px;color:var(--gris);width:30px;flex:none}
+.pitem .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pitem .tag{flex:none;font-size:10px;font-family:var(--font-labels);letter-spacing:1px;
+  color:var(--gris);border:1px solid var(--borde);padding:2px 8px;border-radius:20px}
+.pitem.cur{background:linear-gradient(90deg,rgba(255,196,0,.16),rgba(255,34,51,.08));
+  border-color:rgba(255,196,0,.45);box-shadow:0 0 18px rgba(255,196,0,.15)}
+.pitem.cur .idx{color:var(--amarillo)}
+.pitem.cur .equalizer{width:44px;height:16px;flex:none;display:flex;align-items:flex-end;gap:2px}
+.pitem.cur .equalizer i{background:linear-gradient(180deg,var(--amarillo),var(--rojo));flex:1;border-radius:2px;
+  animation:eqmove .9s ease-in-out infinite}
+.pitem.cur .equalizer i:nth-child(2){animation-delay:-.3s}.pitem.cur .equalizer i:nth-child(3){animation-delay:-.55s}
+
+/* ---------------- CTA INFERIOR ---------------- */
+#cta{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:35;
+  display:flex;gap:14px;align-items:center;padding:0 18px;height:44px;border-radius:24px;
+  background:rgba(5,5,9,.72);border:1px solid rgba(255,196,0,.35);backdrop-filter:blur(8px);
+  font-family:var(--font-labels);font-size:13px;letter-spacing:1px;color:#fff;white-space:nowrap;
+  box-shadow:0 10px 34px rgba(0,0,0,.6)}
+#cta .hastag{color:var(--amarillo);font-weight:600}
+#cta .sep{color:var(--gris)}
+
+/* ---------------- ZONA CONFIG (oculta, aparece al pasar el mouse abajo) ---------------- */
+#configZone{position:fixed;bottom:0;left:0;right:0;z-index:45;height:70px;display:flex;
+  justify-content:center;align-items:flex-end;padding-bottom:12px;opacity:0;transition:opacity .4s;
+  pointer-events:none;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent)}
+#configZone.show{opacity:1;pointer-events:auto}
+#btnCfg{pointer-events:auto;border:1px solid rgba(255,255,255,.25);background:rgba(10,10,16,.85);
+  color:var(--amarillo);font-family:var(--font-labels);font-size:13px;letter-spacing:1px;padding:8px 16px;
+  border-radius:20px;cursor:pointer;backdrop-filter:blur(6px)}
+#btnCfg:hover{border-color:var(--amarillo);box-shadow:0 0 18px rgba(255,196,0,.3)}
+#cfgPanel{position:fixed;bottom:84px;right:20px;z-index:50;width:300px;padding:16px;display:none}
+#cfgPanel.open{display:block}
+#cfgPanel label{display:block;font-family:var(--font-labels);font-size:11px;letter-spacing:2px;
+  color:var(--gris);margin:12px 0 6px;text-transform:uppercase}
+#cfgPanel button{width:100%;background:linear-gradient(90deg,var(--rojo2),var(--purpura));
+  border:none;color:#fff;font-family:var(--font-labels);font-size:13px;letter-spacing:1px;
+  padding:9px;border-radius:9px;cursor:pointer;margin-top:8px}
+#cfgPanel button:hover{filter:brightness(1.2)}
+#cfgCount{font-size:12px;color:var(--gris);margin-top:8px}
+#cfgPanel .close{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--gris);
+  font-size:16px;cursor:pointer;width:auto;padding:0;margin:0}
+
+/* ---------------- MODO TIKTOK 9:16 ---------------- */
+body.tiktok #colRight,body.tiktok .vubox,body.tiktok .hcounter,body.tiktok #configZone{display:none}
+body.tiktok #newsBar{height:64px}
+body.tiktok .newsTag{font-size:12px;padding:0 12px}
+body.tiktok #header{top:64px;height:86px;padding:0 14px}
+body.tiktok .logoMark{width:46px;height:46px;font-size:22px;border-radius:12px}
+body.tiktok .logoTxt strong{font-size:21px;letter-spacing:2px}
+body.tiktok .logoTxt small{font-size:9px;letter-spacing:4px}
+body.tiktok .onair{font-size:12px;padding:6px 12px}
+body.tiktok .hclock{font-size:13px;padding:6px 10px}
+body.tiktok #main{display:block;padding:166px 22px 40px}
+body.tiktok #colLeft{height:100%}
+body.tiktok #nowCard{padding:16px}
+body.tiktok .vinyl{width:160px;height:160px}
+body.tiktok .vinyl::after{inset:44px}
+body.tiktok .npLabel{font-size:13px}
+body.tiktok #npArtist{font-size:38px}
+body.tiktok #npTitle{font-size:27px}
+body.tiktok #npInfo{font-size:13px}
+body.tiktok #cta{font-size:15px;padding:0 22px;height:50px;border-radius:26px}
+body.tiktok #cta .hide-tk{display:none}
+
+/* Ajustes pantalla pequeña horizontal */
+@media (max-width:1180px){
+  #main{grid-template-columns:360px 1fr;padding-left:16px;padding-right:16px}
+  #npArtist{font-size:23px}#npTitle{font-size:17px}.vinyl{width:104px;height:104px}
+  .vinyl::after{inset:28px}
+}
+</style>
+</head>
+<body class="obs">
+
+<!-- ================= FLASH DE CAMBIO ================= -->
+<div id="flash"></div>
+
+<!-- ================= FONDO: SLIDER + VISUAL ENGINE ================= -->
+<div id="bgLayer">
+  <div id="bgSlides"></div>
+  <div id="bgGrad"></div>
+  <canvas id="visualCanvas"></canvas>
+  <div id="scanlines"></div>
+  <div id="vignette"></div>
+</div>
+
+<!-- ================= NEWS BAR (ARRIBA) ================= -->
+<div id="newsBar">
+  <div class="newsTag"><span class="dot"></span> En Directo</div>
+  <div class="newsWrap"><div class="newsTrack" id="newsTrack"></div></div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header id="header">
+  <div class="logoBox">
+    <div class="logoMark">R</div>
+    <div class="logoTxt">
+      <strong>ROCKANROLA <span style="-webkit-text-fill-color:#ff2233">LIVE</span></strong>
+      <small>Ochentas &middot; Noventas &middot; Rock</small>
+    </div>
+  </div>
+  <div class="headerRight">
+    <div class="vubox" title="VU Meters"><div class="vu" style="height:22%"></div><div class="vu gold" style="height:34%"></div><div class="vu" style="height:18%"></div><div class="vu gold" style="height:41%"></div></div>
+    <div class="hcounter"><span id="trackNum">000</span><small>Track</small></div>
+    <div class="hclock"><span id="clock">00:00:00</span><small>Hora Local</small></div>
+    <div class="onair"><span class="pillo"></span> ON AIR <small>- 24/7 -</small></div>
+  </div>
+</header>
+
+<!-- ================= CONTENIDO PRINCIPAL ================= -->
+<main id="main">
+  <!-- COLUMNA IZQUIERDA -->
+  <section id="colLeft">
+    <div id="nowCard" class="card">
+      <div class="npTop">
+        <div class="vinylWrap"><div class="vinyl"><div class="spindle"></div></div></div>
+        <div class="equalizer" id="mainEq">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="npLabel"><b>&#9679;</b> Sonando Ahora</div>
+      <div id="npArtist">ROCKANROLA LIVE</div>
+      <div id="npTitle">Cargando transmisión...</div>
+      <div id="npInfo">
+        <span>G&eacute;nero <b>Rock 80s/90s</b></span>
+        <span>Pista <b id="npPos">--/--</b></span>
+        <span>Formato <b>Radio HD</b></span>
+      </div>
+      <div class="progressTrack"><div id="progressFill"></div></div>
+    </div>
+  </section>
+
+  <!-- COLUMNA DERECHA -->
+  <section id="colRight">
+    <div id="upNextCard" class="card">
+      <h3><span class="bar3"></span> Pr&oacute;ximos en rotaci&oacute;n</h3>
+      <div id="upNextList"></div>
+    </div>
+    <div id="suggestCard" class="card">
+      <h3><span class="bar3"></span> Sugerencias random</h3>
+      <div id="suggestList"></div>
+    </div>
+    <div id="playlistCard" class="card">
+      <h3><span class="bar3"></span> En rotaci&oacute;n &middot; Playlist</h3>
+      <div id="searchBox"><span class="mag">&#128269;</span><input id="searchInput" placeholder="Buscar canción...">
+        <select id="selCarpeta" title="Carpeta de m&uacute;sica activa"></select></div>
+      <div id="playlistList"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= CTA INFERIOR ================= -->
+<div id="cta">
+  <span class="hastag">@rockanrolla</span>
+  <span class="sep hide-tk">&bull;</span>
+  <span class="hide-tk">Comenta tu canci&oacute;n favorita</span>
+  <span class="sep">&bull;</span>
+  <span class="hastag">#Rock80s</span>
+  <span class="hastag">#Rock90s</span>
+  <span class="sep hide-tk">&bull;</span>
+  <span class="hide-tk">Est&aacute;s escuchando ROCKANROLA 24/7</span>
+</div>
+
+<!-- ================= ZONA CONFIG / IMÁGENES ================= -->
+<div id="configZone">
+  <button id="btnCfg">&#9881; IM&Aacute;GENES</button>
+  <button id="btnZara" title="Abrir ZaraRadio con la playlist">&#128251; ABRIR ZARA</button>
+</div>
+<div id="cfgPanel" class="card">
+  <button class="close" id="cfgClose">&times;</button>
+  <label>Im&aacute;genes del slider</label>
+  <button id="btnAddImgs">&#128444; Agregar im&aacute;genes (PC)</button>
+  <div id="cfgCount">0 im&aacute;genes cargadas</div>
+  <label>Fuentes de datos</label>
+  <button id="btnZaraPanel">&#128251; Abrir ZaraRadio + Playlist</button>
+  <div id="zaraHint" style="font-size:11px;color:var(--gris);margin-top:6px">Si no se abre, ejecuta INICIAR.bat una vez (registra el acceso zara://).</div>
+  <button id="btnSongFile">Cargar CurrentSong.txt</button>
+  <button id="btnPlaylistFile">Cargar .lst manualmente</button>
+  <label>Modo</label>
+  <button id="btnTikTok">Modo TikTok 9:16</button>
+  <input type="file" id="fileImgs" multiple accept="image/*" hidden>
+  <input type="file" id="fileSong" accept=".txt" hidden>
+  <input type="file" id="filePlaylist" accept=".lst,.txt,.m3u" hidden>
+</div>
+
+<script>
+/* ============================================================
+   ROCKANROLA LIVE V2.0 — JAVASCRIPT
+   Secciones: CONFIG / NEWS BAR / RANDOM VISUAL ENGINE /
+              IMAGE SLIDER / CURRENT SONG / PLAYLIST /
+              OBS / TIKTOK / PERFORMANCE
+   ============================================================ */
+
+/* ================= CONFIG ================= */
+const CONFIG = {
+    stationName: "ROCKANROLA LIVE",
+    imageInterval: 25000,        // cambio de imagen del slider (20-30s)
+    visualMinTime: 15000,        // tiempo mínimo de cada visual
+    visualMaxTime: 30000,        // tiempo máximo de cada visual
+    enableRandomVisuals: true,   // Random Visual Engine on/off
+    enableImageSlider: true,     // Slider de imágenes on/off
+    tiktok: "@rockanrolla",
+    newsSpeed: 30,               // píxeles/segundo del news ticker
+    songFiles: ["/current/CurrentSong.txt"], // candidatos; se agrega /musica/<carpeta>/CurrentSong.txt
+    playlistFile: "/musica/80s/PLAYLIST.lst",
+    carpetas: ["70s", "80s", "90s", "MIX", "ROCK", "ROCK_ESPANOL"],
+    refreshSongMs: 3000,         // cada cuánto relee CurrentSong.txt
+    defaultImages: [             // imágenes que intentará cargar solas
+        "imagenes/rock01.jpg","imagenes/rock02.jpg","imagenes/rock03.jpg",
+        "imagenes/rock04.jpg","imagenes/rock05.jpg","imagenes/rock06.jpg",
+        "imagenes/rock07.jpg","imagenes/rock08.jpg"
+    ],
+    newsItems: [
+        { t:"EN DIRECTO 24/7 — 80s • 90s • ROCK", b:"ROCKANROLA LIVE" },
+        { t:"COMENTA TU CANCIÓN FAVORITA USANDO", b:"#RegalosRock" },
+        { t:"ESTÁS ESCUCHANDO", b:"ROCKANROLA 24/7" },
+        { t:"TRANSMISIÓN DESDE EL ESTUDIO —", b:"ON AIR" },
+        { t:"PIDE TU CANCIÓN EN LOS COMENTARIOS DEL", b:"LIVE" },
+        { t:"LA MEJOR MÚSICA DE LOS 80s Y 90s EN", b:"ROCKANROLA" },
+        { t:"SÍGUENOS EN", b:"TIKTOK" }
+    ]
+};
+
+/* ================= UTILIDADES ================= */
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
+const rand = (a,b) => a + Math.random()*(b-a);
+const randInt = (a,b) => Math.floor(rand(a,b+1));
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+
+const state = {
+    songs: [],            // lista completa
+    currentIndex: -1,
+    currentKey: "",
+    images: [],           // urls de imágenes actuales
+    slideIndex: 0,
+    visualTimer: null,
+    cfgOpen: false
+};
+
+/* ================= NEWS BAR (arriba) ================= */
+function buildNews(){
+    const track = $("newsTrack");
+    let html = "";
+    for(let rep=0; rep<2; rep++){
+        CONFIG.newsItems.forEach(it => {
+            html += `<span>${it.t} <b>${it.b}</b></span><span class="sep">&#9679;</span>`;
+        });
+    }
+    track.innerHTML = html;
+    const speed = CONFIG.newsSpeed; // px/s
+    const width = track.scrollWidth / 2;
+    track.style.animationDuration = (width / speed) + "s";
+}
+// Re-construye el ancho cuando cambia el tamaño (por si el track se recorta)
+window.addEventListener("resize", buildNews);
+
+/* ================= RELOJ + VU METER ================= */
+function tickClock(){
+    const d = new Date();
+    const p = n => String(n).padStart(2,"0");
+    $("clock").textContent = p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds());
+}
+setInterval(tickClock, 1000); tickClock();
+
+// VU meters pseudoaleatorios de bajo consumo
+setInterval(() => {
+    $$(".vubox .vu").forEach(el => {
+        el.style.height = Math.floor(15 + Math.random()*70) + "%";
+    });
+}, 140);
+
+/* ============================================================
+   IMAGE SLIDER — imágenes locales
+   ============================================================ */
+function setupSlider(){
+    if(!CONFIG.enableImageSlider) return;
+    const wrap = $("bgSlides");
+    wrap.innerHTML = "";
+    if(state.images.length === 0){
+        // intenta cargar las imágenes por defecto de /imagenes
+        CONFIG.defaultImages.forEach(src => {
+            const img = new Image();
+            img.onload = () => addImage(src, true);
+            img.src = src;
+        });
+        return;
+    }
+    state.images.forEach(src => addImage(src, true));
+}
+
+function addImage(src, isBg){
+    if(!state.images.includes(src)) state.images.push(src);
+    const wrap = $("bgSlides");
+    const div = document.createElement("div");
+    div.className = "slide";
+    div.style.backgroundImage = `url("${src}")`;
+    wrap.appendChild(div);
+    if(state.images.length === 1) showedSlide(div); // primera imagen visible
+    updateCfgCount();
+}
+
+function showedSlide(el){
+    $$("#bgSlides .slide").forEach(s => s.classList.remove("on"));
+    el.classList.add("on");
+}
+
+function nextSlide(){
+    if(state.images.length <= 1) return;
+    state.slideIndex = (state.slideIndex + 1) % state.images.length;
+    const slides = $$("#bgSlides .slide");
+    if(slides[state.slideIndex]) showedSlide(slides[state.slideIndex]);
+}
+if(CONFIG.enableImageSlider) setInterval(nextSlide, CONFIG.imageInterval);
+
+// Botón invisible: aparece al pasar el mouse por la zona inferior
+window.addEventListener("mousemove", e => {
+    const z = $("configZone");
+    if(bodyHasClass("tiktok")) { z.classList.remove("show"); return; }
+    if(e.clientY > window.innerHeight - 80) z.classList.add("show");
+    else z.classList.remove("show");
+});
+function bodyHasClass(c){ return document.body.classList.contains(c); }
+
+/* ============================================================
+   RANDOM VISUAL ENGINE — 8 visuales en Canvas 2D
+   (pseudoaleatorios, NO sincronizados con el audio real)
+   ============================================================ */
+const canvas = $("visualCanvas");
+const ctx = canvas.getContext("2d");
+let vw = 0, vh = 0;
+let visualCurrent = -1;
+let visualRunning = false;
+
+function sizeCanvas(){
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // rendimiento
+    vw = window.innerWidth; vh = window.innerHeight;
+    canvas.width = Math.floor(vw * dpr);
+    canvas.height = Math.floor(vh * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+window.addEventListener("resize", sizeCanvas);
+
+/* --- Los 8 visuales. Cada uno recibe (t, dt) --- */
+const VISUALS = [
+    // VISUAL 01 — OSCILOSCOPIO
+    { name:"OSCILOSCOPIO", draw(t){
+        ctx.clearRect(0,0,vw,vh);
+        ctx.lineWidth = 2;
+        for(let e=0; e<3; e++){ // 3 trazas con eco
+            ctx.strokeStyle = e===0 ? "#ff2233" : (e===1 ? "rgba(255,196,0,.4)" : "rgba(41,230,255,.3)");
+            ctx.globalAlpha = 1 - e*0.25;
+            ctx.beginPath();
+            for(let x=0; x<=vw; x+=6){
+                const y = vh*0.5 + Math.sin(x*0.012 + t*3.2 + e*1.4) * 90
+                         + Math.sin(x*0.004 - t*1.8) * 45;
+                x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+            }
+            ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        // línea base
+        ctx.strokeStyle = "rgba(255,255,255,.15)"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0,vh*0.5); ctx.lineTo(vw,vh*0.5); ctx.stroke();
+    }},
+
+    // VISUAL 02 — NEON GRID
+    { name:"NEON GRID", draw(t){
+        ctx.clearRect(0,0,vw,vh);
+        const horizon = vh*0.62, speed = (t*26) % 120;
+        ctx.strokeStyle = "#29e6ff"; ctx.lineWidth = 1.2;
+        ctx.globalAlpha = 0.55;
+        for(let i=0; i<26; i++){
+            const z = (i + speed/120);
+            const y = horizon + Math.pow(z,2.4) * (vh-horizon);
+            ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(vw,y); ctx.stroke();
+        }
+        for(let i=0; i<22; i++){
+            const x = ((i*61 + t*14) % (vw+400)) - 200;
+            ctx.beginPath(); ctx.moveTo(x,horizon); ctx.lineTo(x-260, vh+40); ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        // sol de sintetizador
+        const sun = ctx.createRadialGradient(vw*0.72,horizon-30,2,vw*0.72,horizon-30,90);
+        sun.addColorStop(0,"rgba(255,34,51,.8)"); sun.addColorStop(1,"rgba(255,34,51,0)");
+        ctx.fillStyle = sun; ctx.fillRect(vw*0.72-100,horizon-140,200,200);
+    }},
+
+    // VISUAL 03 — RADIAL
+    { name:"RADIAL", draw(t){
+        ctx.clearRect(0,0,vw,vh);
+        const cx = vw*0.5, cy = vh*0.5;
+        for(let i=0; i<9; i++){
+            const r = ((t*30 + i*130) % 520) + 20;
+            const a = Math.max(0, 1 - r/540);
+            ctx.strokeStyle = i%2 ? `rgba(255,34,51,${a})` : `rgba(155,48,255,${a*.8})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+        }
+        // pulso central
+        const pr = 30 + Math.sin(t*5)*10;
+        const g = ctx.createRadialGradient(cx,cy,0,cx,cy,pr);
+        g.addColorStop(0,"rgba(255,196,0,.55)"); g.addColorStop(1,"rgba(255,196,0,0)");
+        ctx.fillStyle = g; ctx.fillRect(cx-pr,cy-pr,pr*2,pr*2);
+    }},
+
+    // VISUAL 04 — WAVEFORM
+    { name:"WAVEFORM", draw(t){
+        ctx.clearRect(0,0,vw,vh);
+        for(let row=0; row<5; row++){
+            const yb = vh*(0.22 + row*0.14);
+            ctx.strokeStyle = row%2 ? "rgba(41,230,255,.5)" : "rgba(255,34,51,.45)";
+            ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            for(let x=0; x<=vw; x+=8){
+                const y = yb + Math.sin(x*0.01 + t*2.4 + row*1.1) * 26
+                         + Math.sin(x*0.004 - t*1.4 + row) * 16;
+                x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+            }
+            ctx.stroke();
+        }
+    }},
+
+    // VISUAL 05 — PARTICLES (máx 40)
+    { particles:[],  init(){
+        this.particles = Array.from({length:34},()=>({
+            x:Math.random(), y:Math.random(), r:rand(1,2.6),
+            vx:rand(-0.12,0.12), vy:rand(-0.2,-0.02)
+        }));
+    }, draw(t,dt){
+        ctx.clearRect(0,0,vw,vh);
+        this.particles.forEach(p => {
+            p.x += p.vx*dt*0.04; p.y += p.vy*dt*0.04;
+            if(p.y < -0.05){ p.y = 1.05; p.x = Math.random(); }
+            if(p.x < -0.05) p.x = 1.05; if(p.x > 1.05) p.x = -0.05;
+            const px = p.x*vw, py = p.y*vh;
+            const g = ctx.createRadialGradient(px,py,0,px,py,p.r*9);
+            g.addColorStop(0,`rgba(255,196,0,${.9-Math.abs(Math.sin(t*3+p.x*20))*.4})`);
+            g.addColorStop(1,"rgba(255,196,0,0)");
+            ctx.fillStyle = g;
+            ctx.beginPath(); ctx.arc(px,py,p.r*9,0,Math.PI*2); ctx.fill();
+        });
+    }},
+
+    // VISUAL 06 — CRT (muy discreto)
+    { name:"CRT", draw(t){
+        ctx.clearRect(0,0,vw,vh);
+        // barra de rollo sutil
+        const ry = (t*18) % (vh+200) - 100;
+        ctx.fillStyle = "rgba(255,255,255,.02)";
+        ctx.fillRect(0,ry,vw,60);
+        // ruido mínimo (pocos puntos)
+        ctx.fillStyle = "rgba(255,255,255,.05)";
+        for(let i=0;i<90;i++){
+            ctx.fillRect(Math.random()*vw, Math.random()*vh, 1.4, 1.4);
+        }
+        // glow bordes
+        const g = ctx.createRadialGradient(vw/2,vh/2,Math.min(vw,vh)*0.3,vw/2,vh/2,Math.max(vw,vh)*0.75);
+        g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,.5)");
+        ctx.fillStyle = g; ctx.fillRect(0,0,vw,vh);
+    }},
+
+    // VISUAL 07 — SPECTRUM (barras pseudoaleatorias)
+    { bars:[], init(){
+        this.bars = Array.from({length:44}, ()=>rand(0.1,0.5));
+    }, draw(t,dt){
+        ctx.clearRect(0,0,vw,vh);
+        const n = this.bars.length, bw = vw/n;
+        for(let i=0;i<n;i++){
+            const target = 0.08 + Math.abs(Math.sin(t*2 + i*0.9)) * rand(0.1,0.85);
+            this.bars[i] += (target - this.bars[i]) * 0.06; // suavizado
+            const h = this.bars[i]*vh*0.62;
+            const hue = i/n;
+            ctx.fillStyle = hue<0.33 ? "rgba(255,34,51,.8)" : hue<0.66 ? "rgba(255,196,0,.75)" : "rgba(41,230,255,.7)";
+            ctx.fillRect(i*bw+2, vh-h, bw-4, h);
+        }
+    }},
+
+    // VISUAL 08 — GEOMETRIC
+    { name:"GEOMETRIC", draw(t){
+        ctx.clearRect(0,0,vw,vh);
+        ctx.lineWidth = 1.6;
+        // cuadrados girando
+        for(let i=0;i<6;i++){
+            const s = 60 + i*34, a = t*0.8 + i*0.6;
+            const cx = vw*(0.2 + (i%3)*0.3) + Math.sin(t*0.5+i)*60;
+            const cy = vh*(0.3 + Math.floor(i/3)*0.4) + Math.cos(t*0.6+i*2)*40;
+            ctx.strokeStyle = ["#ff2233","#ffc400","#29e6ff","#9b30ff"][i%4];
+            ctx.save(); ctx.translate(cx,cy); ctx.rotate(a); ctx.strokeRect(-s/2,-s/2,s,s); ctx.restore();
+        }
+        // círculos pulsantes
+        for(let i=0;i<5;i++){
+            const r = 18 + ((t*40 + i*90) % 80);
+            ctx.strokeStyle = `rgba(255,196,0,${clamp(1-r/100,.1,.6)})`;
+            ctx.beginPath(); ctx.arc(vw*0.5 + Math.sin(t+i)*120, vh*0.5 + Math.cos(t*1.3+i)*90, r, 0, Math.PI*2); ctx.stroke();
+        }
+        // línea diagonal luminosa
+        ctx.strokeStyle = "rgba(255,34,51,.65)";
+        ctx.beginPath();
+        ctx.moveTo(((t*30)%(vw+400))-200, 0);
+        ctx.lineTo(((t*30)%(vw+400))-200+220, vh);
+        ctx.stroke();
+    }}
+];
+
+// inicializa partículas y spectrum una sola vez
+VISUALS[4].init(); VISUALS[6].init();
+
+function selectVisual(forceDifferent){
+    if(!CONFIG.enableRandomVisuals) return;
+    let next;
+    do { next = randInt(0, VISUALS.length-1); }
+    while(next === visualCurrent && VISUALS.length > 1);
+    if(forceDifferent && next === visualCurrent) next = (next+1)%VISUALS.length;
+    visualCurrent = next;
+    // transición fade del canvas
+    canvas.style.opacity = 0;
+    setTimeout(()=>{ canvas.style.opacity = 0.5; }, 60);
+    scheduleNextVisual();
+}
+
+function scheduleNextVisual(){
+    clearTimeout(state.visualTimer);
+    state.visualTimer = setTimeout(()=>selectVisual(true),
+        randInt(CONFIG.visualMinTime, CONFIG.visualMaxTime));
+}
+
+// loop único de dibujo (perf: se detiene si la pestaña no es visible)
+let lastT = 0;
+function engineLoop(ts){
+    if(!visualRunning){ lastT = 0; return; }
+    if(lastT === 0) lastT = ts;
+    const dt = Math.min(ts - lastT, 60); lastT = ts;
+    const t = ts/1000;
+    ctx.clearRect(0,0,vw,vh);
+    if(visualCurrent >= 0) VISUALS[visualCurrent].draw(t, dt);
+    requestAnimationFrame(engineLoop);
+}
+document.addEventListener("visibilitychange", () => {
+    if(document.hidden) stopEngine(); else startEngine();
+});
+function startEngine(){ if(!visualRunning){ visualRunning = true; lastT = 0; requestAnimationFrame(engineLoop); } }
+function stopEngine(){ visualRunning = false; }
+
+function initVisualEngine(){
+    sizeCanvas();
+    if(CONFIG.enableRandomVisuals){
+        startEngine();
+        selectVisual(false);
+    } else { canvas.style.display = "none"; }
+}
+
+/* ============================================================
+   CURRENT SONG — lectura de CurrentSong.txt (ZaraRadio)
+   ============================================================ */
+function parseSongText(raw){
+    // Ejemplo: "Berlin - Take My Breath Away (Official Video - Top Gun) [Bx51eegLTY8]"
+    let s = raw.trim().split("\n")[0] || "";
+    s = s.replace(/^\s*\d{1,4}\s*[\-\.\_]\s*/, "");          // quita "001 - " / "12- " del inicio
+    s = s.replace(/\s*\[[^\]]*\]\s*$/g, "").trim();          // quita [id de youtube]
+    s = s.replace(/\s*\([^)]*\)\s*$/g, "").trim();            // quita (Official Video...)
+    // separa Artista - Título en el primer " - "
+    const idx = s.indexOf(" - ");
+    if(idx > 0){
+        return { artist: s.slice(0,idx).trim(), title: s.slice(idx+3).trim() };
+    }
+    return { artist: CONFIG.stationName, title: s || "Now Playing" };
+}
+
+/* Lectura con codificacion ANSI (cp1252): ZaraRadio escribe .lst y
+   CurrentSong.txt en ANSI, no en UTF-8. Sin esto, los acentos salen mal. */
+async function fetchAnsi(url){
+    const r = await fetch(url + "?r=" + Date.now(), { cache:"no-store" });
+    if(!r.ok) return null;
+    return new TextDecoder("windows-1252").decode(await r.arrayBuffer());
+}
+
+function carpetaActiva(){
+    const m = CONFIG.playlistFile.match(/\/musica\/([^\/]+)\//);
+    return m ? m[1] : "80s";
+}
+
+async function pollCurrentSong(){
+    const cand = CONFIG.songFiles.concat(["/musica/" + carpetaActiva() + "/CurrentSong.txt"]);
+    for(const u of cand){
+        try{
+            const txt = await fetchAnsi(u);
+            if(txt){ applyCurrentSong(txt); return; }
+        }catch(e){ /* siguiente candidato */ }
+    }
+    if(state.songFileBlob) readManualSong();
+}
+
+let lastSongKey = "";
+function applyCurrentSong(raw){
+    const info = parseSongText(raw);
+    const key = (info.artist + "|" + info.title).toLowerCase();
+    if(key === state.currentKey) return; // misma canción: no repetir transición
+    state.currentKey = key;
+
+    // actualiza UI
+    $("npArtist").textContent = info.artist;
+    $("npTitle").textContent = info.title;
+
+    // busca posición en la playlist
+    const idx = state.songs.findIndex(s =>
+        (s.artist && s.title && (s.artist+ " - " + s.title).toLowerCase().includes(info.artist.toLowerCase())
+         && (s.artist + " - " + s.title).toLowerCase().includes(info.title.replace(/\(.*\)/g,"").trim().toLowerCase()))
+    );
+    if(idx >= 0 && idx !== state.currentIndex){
+        state.currentIndex = idx;
+        $("trackNum").textContent = String(idx+1).padStart(3,"0");
+        $("npPos").textContent = (idx+1) + "/" + state.songs.length;
+        highlightPlaylist();
+    }
+
+    // reacción visual al cambio de canción: flash + nuevo visual + avanza imagen
+    document.body.classList.remove("song-flash");
+    void document.body.offsetWidth; // reinicia la animación
+    document.body.classList.add("song-flash");
+    setTimeout(()=>document.body.classList.remove("song-flash"), 1000);
+    if(CONFIG.enableRandomVisuals) selectVisual(true);
+    if(CONFIG.enableImageSlider) setTimeout(nextSlide, 400);
+    buildUpNext();
+}
+
+/* ============================================================
+   PLAYLIST — lectura de PLAYLIST 80S.lst + buscador
+   ============================================================ */
+async function pollPlaylist(){
+    try{
+        const txt = await fetchAnsi(CONFIG.playlistFile);
+        if(txt) applyPlaylist(txt);
+    }catch(e){ /* fallback manual */ }
+}
+
+function limpiarNombre(path){
+    // "D:\...\001 - Soda Stereo - De Musica Ligera (Official Video).mp3"
+    //  -> "Soda Stereo - De Musica Ligera"
+    let b = (path||"").split(/[\\/]/).pop() || path || "";
+    b = b.replace(/\.(mp3|wav|flac|m4a|ogg|aac|wma)$/i, "");
+    b = b.replace(/^\s*\d{1,4}\s*[\-\.\_]\s*/, "");
+    b = b.replace(/[\s\-\_]*(?:official\s*(?:video|audio|visualizer|lyrics?)|lyrics?|subtitulad[oa][^)]*|letra[^)]*|remasterizad[oa][^)]*|video\s*oficial|cover\s*audio|en\s+vivo|live|full\s*hd|hd720|hd|traducid[oa][^)]*|sub\s*espa[ñn]ol)[\s\-\_]*(?:\([^)]*\)|\[[^\]]*\])?/gi, "");
+    b = b.replace(/\s*\([^)]*\)\s*$/g, "");
+    b = b.replace(/\s*\[[^\]]*\]\s*$/g, "");
+    return b.trim();
+}
+
+function applyPlaylist(raw){
+    const lines = raw.split(/\r?\n/)
+        .map(l => l.trim())
+        .filter(l => l && !l.startsWith("#") && !l.startsWith(";") && !/^\d+$/.test(l));;
+    state.songs = lines.map(l => {
+        const clean = limpiarNombre(l);
+        let artist = "", title = clean;
+        const idx = clean.indexOf(" - ");
+        if(idx > 0){ artist = clean.slice(0,idx).trim(); title = clean.slice(idx+3).trim(); }
+        return { artist, title, raw:clean, path:l, dec:detectDecada(clean) };
+    });
+    renderPlaylist("");
+    buildUpNext();
+    buildSuggestions();
+    if(state.currentIndex < 0 && state.songs.length) $("npPos").textContent = "1/" + state.songs.length;
+}
+
+function detectDecada(raw){
+    if(/19[78]\d/.test(raw) || /70s|70's/.test(raw)) return "70s";
+    if(/19[89]\d/.test(raw) || /80s|80's/.test(raw)) return "80s";
+    if(/199\d/.test(raw) || /90s|90's/.test(raw)) return "90s";
+    if(/200\d/.test(raw) || /00s/.test(raw)) return "00s";
+    return "ROCK";
+}
+
+function renderPlaylist(filter){
+    const list = $("playlistList");
+    const q = filter.trim().toLowerCase();
+    const items = state.songs
+        .map((s,i)=>({s,i}))
+        .filter(({s}) => !q || s.raw.toLowerCase().includes(q));
+    list.innerHTML = "";
+    items.forEach(({s,i}) => {
+        const div = document.createElement("div");
+        div.className = "pitem" + (i === state.currentIndex ? " cur" : "");
+        const eq = i === state.currentIndex
+            ? `<span class="equalizer"><i></i><i></i><i></i></span>` : "";
+        div.innerHTML = `<span class="idx">${String(i+1).padStart(2,"0")}</span>
+            <span class="t">${s.raw}</span>${eq}<span class="tag">${s.dec}</span>`;
+        div.onclick = () => selectManual(i);
+        list.appendChild(div);
+    });
+}
+
+function selectManual(i){
+    state.currentIndex = i;
+    $("trackNum").textContent = String(i+1).padStart(3,"0");
+    $("npPos").textContent = (i+1) + "/" + state.songs.length;
+    const s = state.songs[i];
+    if(s.artist){ $("npArtist").textContent = s.artist; $("npTitle").textContent = s.title; }
+    else { $("npArtist").textContent = CONFIG.stationName; $("npTitle").textContent = s.title; }
+    state.currentKey = "manual|" + s.raw;
+    highlightPlaylist();
+    if(CONFIG.enableRandomVisuals) selectVisual(true);
+}
+
+function highlightPlaylist(){
+    renderPlaylist($("searchInput").value);
+    const cur = $$("#playlistList .pitem.cur")[0];
+    if(cur) cur.scrollIntoView({ block:"center", behavior:"smooth" });
+}
+
+function buildUpNext(){
+    const box = $("upNextList");
+    if(!state.songs.length){ box.innerHTML = `<div style="padding:14px;color:var(--gris)">Esperando PLAYLIST 80S.lst...</div>`; return; }
+    box.innerHTML = "";
+    const start = state.currentIndex >= 0 ? state.currentIndex : 0;
+    for(let k=1; k<=3; k++){
+        const i = (start + k) % state.songs.length;
+        const div = document.createElement("div");
+        div.className = "upNextItem" + (k===1 ? " on" : "");
+        div.innerHTML = `<span class="n">${k===1?"NXT":String(k)}</span><span>${state.songs[i].raw}</span>`;
+        box.appendChild(div);
+    }
+}
+
+function buildSuggestions(){
+    const box = $("suggestList");
+    box.innerHTML = "";
+    const pool = state.songs.length ? state.songs : [
+        {raw:"Music 80s Rock"}, {raw:"Ballads 80s"}, {raw:"Hard Rock 90s"}, {raw:"Classic Rock"}
+    ];
+    const chosen = new Set();
+    while(chosen.size < 4 && chosen.size < pool.length){
+        chosen.add(Math.floor(Math.random()*pool.length));
+    }
+    chosen.forEach(i => {
+        const div = document.createElement("div");
+        div.className = "sugg";
+        div.innerHTML = `<small>Recomendado</small><b>${pool[i].raw.split(" - ").pop()}</b>`;
+        div.onclick = () => selectManual(i);
+        box.appendChild(div);
+    });
+}
+
+/* ============================================================
+   CONFIG / PANEL — botón oculto ⚙
+   ============================================================ */
+function updateCfgCount(){
+    $("cfgCount").textContent = state.images.length + " imágenes cargadas";
+}
+$("btnCfg").onclick = e => {
+    e.stopPropagation();
+    const p = $("cfgPanel");
+    state.cfgOpen = !state.cfgOpen;
+    p.classList.toggle("open", state.cfgOpen);
+};
+$("cfgClose").onclick = () => { $("cfgPanel").classList.remove("open"); state.cfgOpen = false; };
+
+/* Botón ABRIR ZARA: usa el protocolo local zara:// registrado por INICIAR.bat */
+function abrirZara(){
+    try{ location.href = "zara://open"; }
+    catch(e){
+        $("zaraHint").textContent = "No se pudo abrir. Cierra la pestaña y ejecuta INICIAR.bat desde la carpeta.";
+    }
+}
+$("btnZara").onclick = abrirZara;
+$("btnZaraPanel").onclick = abrirZara;
+$("btnAddImgs").onclick = () => $("fileImgs").click();
+$("fileImgs").onchange = e => {
+    [...e.target.files].forEach(f => {
+        const url = URL.createObjectURL(f);
+        addImage(url);
+    });
+    if(state.images.length) nextSlide(); // muestra la primera recién agregada
+    e.target.value = "";
+};
+$("btnSongFile").onclick = () => $("fileSong").click();
+$("fileSong").onchange = e => {
+    const f = e.target.files[0]; if(!f) return;
+    state.songFileBlob = f;
+    const rd = new FileReader();
+    rd.onload = () => applyCurrentSong(rd.result);
+    rd.readAsText(f);
+};
+function readManualSong(){ /* placeholder: con File no se puede re-leer en vivo; usar fetch con servidor local */ }
+$("btnPlaylistFile").onclick = () => $("filePlaylist").click();
+$("filePlaylist").onchange = e => {
+    const f = e.target.files[0]; if(!f) return;
+    const rd = new FileReader();
+    rd.onload = () => applyPlaylist(rd.result);
+    rd.readAsText(f);
+};
+$("btnTikTok").onclick = () => {
+    document.body.classList.toggle("tiktok");
+    $("btnTikTok").textContent =
+        document.body.classList.contains("tiktok") ? "Modo OBS 16:9" : "Modo TikTok 9:16";
+};
+// auto-detección vertical (pantalla 9:16)
+function autoTikTok(){
+    if(window.innerHeight > window.innerWidth * 1.15){
+        document.body.classList.add("tiktok");
+        $("btnTikTok").textContent = "Modo OBS 16:9";
+    }
+}
+
+/* ============================================================
+   OBS / INICIO  — arranque
+   ============================================================ */
+// Comentario OBS: usa esta página como "Browser Source" 1920x1080.
+// El archivo debe servirse con un servidor local (p. ej. `python -m http.server 8080`)
+// para que fetch() pueda leer CurrentSong.txt y PLAYLIST 80S.lst.
+
+window.addEventListener("load", () => {
+    buildNews();
+    autoTikTok();
+    initVisualEngine();
+    setupSlider();
+    const firstDemand = () => {
+        pollPlaylist();
+        pollCurrentSong();
+        setInterval(pollCurrentSong, CONFIG.refreshSongMs);
+    };
+    firstDemand();
+    // selector de carpeta de musica (playlist v2)
+    const sel = $("selCarpeta");
+    CONFIG.carpetas.forEach(c => {
+        const o = document.createElement("option");
+        o.value = c;
+        o.textContent = (c === "ROCK_ESPANOL") ? "ROCK ESPA\u00d1OL" : c;
+        sel.appendChild(o);
+    });
+    sel.value = "80s";
+    sel.onchange = () => {
+        CONFIG.playlistFile = "/musica/" + sel.value + "/PLAYLIST.lst";
+        state.songs = []; state.currentIndex = -1; state.currentKey = "";
+        $("npPos").textContent = "--/--";
+        pollPlaylist();
+    };
+    setTimeout(() => { if(!state.songs.length) pollPlaylist(); }, 4000);
+    $("searchInput").addEventListener("input", () => renderPlaylist($("searchInput").value));
+    // re-construye el fin del news si cambia el ancho del texto
+    setTimeout(buildNews, 500);
+});
+
+// PERFORMANCE: sin listener globales innecesarios; el engine se detiene con pestaña oculta.
+// El equalizer y el vinilo usan animaciones CSS (GPU) y no consumen JS.
+</script>
+</body>
+</html>
